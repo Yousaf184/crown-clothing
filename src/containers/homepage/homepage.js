@@ -1,5 +1,5 @@
 import React from 'react';
-import HomepageMenu from './homepage-menu/homepage-menu';
+import HomepageMenu from '../../components/homepage-menu/homepage-menu';
 
 function Homepage(props) {
     return (
