@@ -1,0 +1,44 @@
+.collectionItem {
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    align-items: center;
+
+    @media (max-width: 780px) {
+        & {
+            width: 48%;
+        }
+    }
+
+    @media (max-width: 390px) {
+        & {
+            width: 100%;
+        }
+    }
+
+    .image {
+        width: 100%;
+        height: 95%;
+        background-size: cover;
+        background-position: center;
+        margin-bottom: 5px;
+    }
+
+    .collectionFooter {
+        width: 100%;
+        height: 5%;
+        padding: 0 0 25px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+
+        .name {
+            width: 90%;
+        }
+
+        .price {
+            width: 10%;
+        }
+    }
+}
