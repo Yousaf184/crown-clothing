@@ -1,0 +1,43 @@
+.form {
+    width: 45%;
+    box-shadow: 0 0.1px 6px rgba(0, 0, 0, 0.2);
+    padding: 25px 30px;
+    box-sizing: border-box;
+    margin: 40px auto 0;
+
+    @media (max-width: 900px) {
+        & {
+            width: 55%;
+        }
+    }
+
+    @media (max-width: 680px) {
+        & {
+            width: 65%;
+        }
+    }
+
+    @media (max-width: 580px) {
+        & {
+            width: 85%;
+        }
+    }
+
+    @media (max-width: 450px) {
+        & {
+            width: 100%;
+        }
+    }
+
+    h2 {
+        margin: 0 0 10px 0;
+    }
+
+    .subtitle {
+        color: gray;
+    }
+
+    .submitBtn {
+        display: block;
+    }
+}

@@ -14,6 +14,7 @@ function Header(props) {
             <div className={classes.navItems}>
                 <Link to="/shop" className={classes.navItem}>Shop</Link>
                 <Link to="/contact" className={classes.navItem}>Contact</Link>
+                <Link to="/auth" className={classes.navItem}>Sign in</Link>
             </div>
         </div>
     );
