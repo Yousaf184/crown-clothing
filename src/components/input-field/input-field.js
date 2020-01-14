@@ -7,7 +7,7 @@ function InputField(props) {
 
     return (
         <div className={classes.inputContainer}>
-            <input type={type} name={name} onChange={handleChange}/>
+            <input type={type} name={name} value={value} onChange={handleChange}/>
             <label className={value ? classes.shrink : ''}>{ label }</label>
             {
                 errorMessage

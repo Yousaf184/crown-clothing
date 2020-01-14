@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { renderFormInputs } from '../../utils/form';
+import { renderFormInputs, isFormValid } from '../../utils/form';
 
 import classes from './form.module.scss';
 
@@ -13,26 +13,37 @@ class Form extends Component {
             thisObj,
             formKey,
             submitBtnLabel,
-            submitHandler
+            submitHandler,
+            errorMessage
         } = this.props;
 
         return (
-            <div className={classes.form}>
-                <form onSubmit={submitHandler}>
-                    <h2>{ formTitle }</h2>
-                    <span className={classes.subtitle}>
-                        { formSubtitle }
-                    </span>
+            <React.Fragment>
+                {
+                    errorMessage &&
+                        <span className={classes.errorBlock}>{ errorMessage }</span>
+                }
 
-                    { renderFormInputs(formObj, thisObj, formKey) }
+                <div className={classes.form}>
+                    <form onSubmit={submitHandler}>
+                        <h2>{ formTitle }</h2>
+                        <span className={classes.subtitle}>
+                            { formSubtitle }
+                        </span>
 
-                    <button type="submit" className={classes.submitBtn}>
-                        { submitBtnLabel }
-                    </button>
-                </form>
+                        { renderFormInputs(formObj, thisObj, formKey) }
 
-                { this.props.children}
-            </div>
+                        <button
+                            type="submit"
+                            className={classes.submitBtn}
+                            disabled={!isFormValid(formObj)}>
+                            { submitBtnLabel }
+                        </button>
+                    </form>
+
+                    { this.props.children}
+                </div>
+            </React.Fragment>
         );
     }
 }

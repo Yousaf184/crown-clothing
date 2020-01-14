@@ -109,3 +109,22 @@ function isInputFieldValid(inputField, validationRules) {
 function setInputFieldErrorMessage(inputField, validationRule) {
     inputField.errorMessage = validationRule.message;
 };
+
+/**
+ * returns boolean value indicating whether overall form is valid
+ *
+ * @param {object} formObj - object respresentation of a form
+ */
+export function isFormValid(formObj) {
+    let isValid = true;
+    const arr = Object.values(formObj);
+
+    for (let i = 0; i < arr.length; i++) {
+        if (!arr[i].valid) {
+            isValid = false;
+            break;
+        }
+    }
+
+    return isValid;
+};

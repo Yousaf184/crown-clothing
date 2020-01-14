@@ -41,3 +41,15 @@
         display: block;
     }
 }
+
+.errorBlock {
+    border: 1px solid #cc001b;
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #ffbbc4;
+    color: #cc001b;
+}

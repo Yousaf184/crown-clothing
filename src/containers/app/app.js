@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Router, Route } from 'react-router-dom';
-import firebase from 'firebase/app';
 
 import HomePage from '../homepage/homepage';
 import ShopPage from '../shopPage/shopPage';
@@ -8,6 +7,7 @@ import AuthPage from '../authPage/authPage';
 import Header from '../../components/header/header';
 
 import routerHistory from '../../utils/routerHistory';
+import { firebaseAuth, createUserDocument } from '../../utils/firebase';
 
 class App extends Component {
     constructor(props) {
@@ -18,15 +18,24 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribeFromAuth = firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
+        this.unsubscribeFromAuth = firebaseAuth.onAuthStateChanged((userAuth) => {
+            if (userAuth) {
                 const currentUser = {
-                    name: user.displayName,
-                    email: user.email
+                    id: userAuth.uid,
+                    name: userAuth.displayName,
+                    email: userAuth.email
                 };
 
                 this.setState({ currentUser });
-                routerHistory.replace('/');
+
+                /**
+                 * display name will be defined in case of google sign in
+                 * only call createUserDocument function here in case of
+                 * google sign in
+                 */
+                if (userAuth.displayName) {
+                    createUserDocument(currentUser);
+                }
             }
         });
     }
@@ -37,7 +46,7 @@ class App extends Component {
 
     signOut = () => {
         this.setState({ currentUser: null });
-        firebase.auth().signOut();
+        firebaseAuth.signOut();
     };
 
     render() {

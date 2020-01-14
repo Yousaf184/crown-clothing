@@ -16,7 +16,23 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+export const firestore = firebase.firestore();
+export const firebaseAuth = firebase.auth();
+
 export function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
+}
+
+export async function createUserDocument(user) {
+    try {
+        const userDocRef = firestore.collection('users').doc(user.id);
+        const snapshot = await userDocRef.get();
+
+        if (!snapshot.exists) {
+            await userDocRef.set(user);
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
 }

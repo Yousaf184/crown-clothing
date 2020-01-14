@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 
 import Form from '../form/form';
+import Spinner from '../spinner/spinner';
+
+import { firebaseAuth, createUserDocument } from '../../utils/firebase';
+import routerHistory from '../../utils/routerHistory';
 
 class SignupForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            signupInProgress: false,
+            errorMessage: '',
             signupForm: {
                 name: {
                     label: 'Full Name',
@@ -97,10 +103,37 @@ class SignupForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log('signup form');
+        this.setState({ signupInProgress: true });
+
+        const email = this.state.signupForm.email.value;
+        const password = this.state.signupForm.password.value;
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .then(result => {
+                if (result.user) {
+                    const newUser = {
+                        id: result.user.uid,
+                        name: this.state.signupForm.name.value,
+                        email: email
+                    };
+
+                    createUserDocument(newUser);
+                    routerHistory.replace('/');
+                }
+            })
+            .catch(error => {
+                this.setState({
+                    errorMessage: error.message,
+                    signupInProgress: false
+                });
+            });
     };
 
     render() {
+        if (this.state.signupInProgress) {
+            return <Spinner/>;
+        }
+
         return (
             <Form
                 formTitle="I don't have an account"
@@ -110,7 +143,8 @@ class SignupForm extends Component {
                 formKey='signupForm'
                 submitBtnLabel="Sign up"
                 submitHandler={this.handleSubmit}
-            >
+                errorMessage={this.state.errorMessage}>
+
                 <span>Already have an account?</span>
                 <button
                     className="authFormToggleBtn"
