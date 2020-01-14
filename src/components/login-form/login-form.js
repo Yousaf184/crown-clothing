@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 
 import Form from '../form/form';
+import Spinner from '../spinner/spinner';
+
+import { signInWithGoogle } from '../../utils/firebase';
 
 class LoginForm extends Component {
+    LOGIN_IN_PROGRESS_KEY = 'loginInProgress';
+
     constructor(props) {
         super(props);
         this.state = {
+            loginInProgress: false,
             loginForm: {
                 email: {
                     label: 'Email',
@@ -55,12 +61,30 @@ class LoginForm extends Component {
         };
     }
 
+    componentDidMount() {
+        if (localStorage.getItem(this.LOGIN_IN_PROGRESS_KEY)) {
+            this.setState({ loginInProgress: true });
+            localStorage.removeItem(this.LOGIN_IN_PROGRESS_KEY);
+        }
+    }
+
+    googleSignIn = () => {
+        localStorage.setItem(this.LOGIN_IN_PROGRESS_KEY, true);
+        this.setState({ loginInProgress: true });
+        signInWithGoogle();
+    };
+
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({ loginInProgress: true });
         console.log('log in form');
     };
 
     render() {
+        if (this.state.loginInProgress) {
+            return <Spinner/>;
+        }
+
         return (
             <Form
                 formTitle="I already have an account"
@@ -69,8 +93,13 @@ class LoginForm extends Component {
                 thisObj={this}
                 formKey='loginForm'
                 submitBtnLabel="Login"
-                submitHandler={this.handleSubmit}
-            >
+                submitHandler={this.handleSubmit}>
+
+                <button
+                    className="googleSignInBtn"
+                    onClick={this.googleSignIn}>
+                    Sign in with Google
+                </button>
                 <span>Don't have an account?</span>
                 <button
                     className="authFormToggleBtn"
