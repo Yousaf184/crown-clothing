@@ -82,7 +82,7 @@ class SignupForm extends Component {
                     validationRules: {
                         passwordMisMatch: {
                             // current password value in password field
-                            passwordValue: '',
+                            passwordValue: () => this.state.signupForm.password.value,
                             message: 'passwords do not match'
                         }
                     },

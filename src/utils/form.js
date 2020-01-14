@@ -89,10 +89,10 @@ function isInputFieldValid(inputField, validationRules) {
     }
 
     if (
-        validationRules.passwordMismatch &&
-        inputField.value !== validationRules.passwordMismatch.passwordValue
+        validationRules.passwordMisMatch &&
+        inputField.value !== validationRules.passwordMisMatch.passwordValue()
     ) {
-        setInputFieldErrorMessage(inputField, validationRules.passwordMismatch);
+        setInputFieldErrorMessage(inputField, validationRules.passwordMisMatch);
         return false;
     }
 
