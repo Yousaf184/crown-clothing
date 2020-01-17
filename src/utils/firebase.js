@@ -50,7 +50,24 @@ export async function fetchUser(userId) {
         const userDocRef = firestore.collection('users').doc(userId);
         const snapshot = await userDocRef.get();
 
-        return snapshot.data();
+        if (snapshot.exists) {
+            return snapshot.data();
+        } else {
+            /**
+             * when a user creates an account using email/password, fetchUser
+             * function will be called immediately after user is logged in.
+             * there may be a case where user info hasn't been saved in database
+             * yet, so in this case, wait for 1 second and then read the newly
+             * created user's info and resolve the promise
+             */
+            return new Promise((resolve, reject) => {
+                setTimeout(async () => {
+                    const snapshot = await userDocRef.get();
+                    resolve(snapshot.data());
+                }, 1000);
+            });
+        }
+
     } catch (error) {
         console.log(error.message);
     }

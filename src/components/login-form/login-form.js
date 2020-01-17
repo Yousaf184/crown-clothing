@@ -26,15 +26,7 @@ class LoginForm extends Component {
                         type: 'email'
                     },
                     validationRules: {
-                        required: { message: 'email required' },
-                        minLength: {
-                            value: 10,
-                            message: 'email should contain atleast 10 characters'
-                        },
-                        maxLength: {
-                            value: 30,
-                            message: 'email cannot contain more than 30 characters'
-                        }
+                        required: { message: 'email required' }
                     },
                     value: '',
                     valid: false,
@@ -48,15 +40,7 @@ class LoginForm extends Component {
                         type: 'password'
                     },
                     validationRules: {
-                        required: { message: 'password required' },
-                        minLength: {
-                            value: 8,
-                            message: 'password should contain atleast 8 characters'
-                        },
-                        maxLength: {
-                            value: 20,
-                            message: 'password cannot contain more than 20 characters'
-                        }
+                        required: { message: 'password required' }
                     },
                     value: '',
                     valid: false,
@@ -107,7 +91,7 @@ class LoginForm extends Component {
             .catch(error => {
                 this.setState({
                     errorMessage: error.message,
-                    signupInProgress: false
+                    loginInProgress: false
                 });
             });
     };

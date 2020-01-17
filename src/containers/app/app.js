@@ -34,7 +34,11 @@ class App extends Component {
             else if (userAuth) {
                 // fetch current user and set the currentUser in state
                 fetchUser(userAuth.uid)
-                    .then(user => this.setCurrentUser(user))
+                    .then(user => {
+                        if (user) {
+                            this.setCurrentUser(user);
+                        }
+                    })
                     .catch(error => console.log(error.message));
             }
         });
