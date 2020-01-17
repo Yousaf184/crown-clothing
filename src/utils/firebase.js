@@ -21,7 +21,15 @@ export const firebaseAuth = firebase.auth();
 
 export function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
+    firebaseAuth.signInWithRedirect(provider);
+}
+
+export function signInWithEmail(email, password) {
+    return firebaseAuth.signInWithEmailAndPassword(email, password);
+}
+
+export function signupWithEmailAndPassword(email, password) {
+    return firebaseAuth.createUserWithEmailAndPassword(email, password);
 }
 
 export async function createUserDocument(user) {
@@ -32,6 +40,17 @@ export async function createUserDocument(user) {
         if (!snapshot.exists) {
             await userDocRef.set(user);
         }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+export async function fetchUser(userId) {
+    try {
+        const userDocRef = firestore.collection('users').doc(userId);
+        const snapshot = await userDocRef.get();
+
+        return snapshot.data();
     } catch (error) {
         console.log(error.message);
     }

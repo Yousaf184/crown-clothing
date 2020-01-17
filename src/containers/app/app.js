@@ -7,7 +7,7 @@ import AuthPage from '../authPage/authPage';
 import Header from '../../components/header/header';
 
 import routerHistory from '../../utils/routerHistory';
-import { firebaseAuth, createUserDocument } from '../../utils/firebase';
+import { firebaseAuth, createUserDocument, fetchUser } from '../../utils/firebase';
 
 class App extends Component {
     constructor(props) {
@@ -19,23 +19,23 @@ class App extends Component {
 
     componentDidMount() {
         this.unsubscribeFromAuth = firebaseAuth.onAuthStateChanged((userAuth) => {
-            if (userAuth) {
+            // only execute this code incase of google signin
+            if (userAuth && userAuth.displayName) {
                 const currentUser = {
                     id: userAuth.uid,
                     name: userAuth.displayName,
                     email: userAuth.email
                 };
 
-                this.setState({ currentUser });
-
-                /**
-                 * display name will be defined in case of google sign in
-                 * only call createUserDocument function here in case of
-                 * google sign in
-                 */
-                if (userAuth.displayName) {
-                    createUserDocument(currentUser);
-                }
+                this.setCurrentUser(currentUser);
+                createUserDocument(currentUser);
+            }
+            // incase of email signin or signup
+            else if (userAuth) {
+                // fetch current user and set the currentUser in state
+                fetchUser(userAuth.uid)
+                    .then(user => this.setCurrentUser(user))
+                    .catch(error => console.log(error.message));
             }
         });
     }
@@ -48,6 +48,10 @@ class App extends Component {
         this.setState({ currentUser: null });
         firebaseAuth.signOut();
     };
+
+    setCurrentUser = (user) => {
+        this.setState({ currentUser: user });
+    }
 
     render() {
         return (

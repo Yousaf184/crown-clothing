@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Form from '../form/form';
 import Spinner from '../spinner/spinner';
 
-import { firebaseAuth, createUserDocument } from '../../utils/firebase';
+import { createUserDocument, signupWithEmailAndPassword } from '../../utils/firebase';
 import routerHistory from '../../utils/routerHistory';
 
 class SignupForm extends Component {
@@ -108,7 +108,7 @@ class SignupForm extends Component {
         const email = this.state.signupForm.email.value;
         const password = this.state.signupForm.password.value;
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        signupWithEmailAndPassword(email, password)
             .then(result => {
                 if (result.user) {
                     const newUser = {

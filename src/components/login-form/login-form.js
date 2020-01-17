@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 import Form from '../form/form';
 import Spinner from '../spinner/spinner';
 
-import { signInWithGoogle, firebaseAuth } from '../../utils/firebase';
+import {
+    signInWithGoogle,
+    firebaseAuth,
+    signInWithEmail
+} from '../../utils/firebase';
 import routerHistory from '../../utils/routerHistory';
 
 class LoginForm extends Component {
@@ -80,6 +84,8 @@ class LoginForm extends Component {
     }
 
     googleSignIn = () => {
+        // after redirect from google sign in page, this value
+        // in localStorage will be used to determine whether to show spinner
         localStorage.setItem(this.LOGIN_IN_PROGRESS_KEY, true);
         this.setState({ loginInProgress: true });
         signInWithGoogle();
@@ -88,7 +94,22 @@ class LoginForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({ loginInProgress: true });
-        console.log('log in form');
+
+        const email = this.state.loginForm.email.value;
+        const password = this.state.loginForm.password.value;
+
+        signInWithEmail(email, password)
+            .then(result => {
+                if (result.user) {
+                    routerHistory.replace('/');
+                }
+            })
+            .catch(error => {
+                this.setState({
+                    errorMessage: error.message,
+                    signupInProgress: false
+                });
+            });
     };
 
     render() {
