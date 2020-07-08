@@ -1,31 +1,20 @@
-import React, { Component } from 'react';
+import React, { useState } from "react";
 
-import LoginForm from '../../components/login-form/login-form';
-import SignupForm from '../../components/signup-form/sign-form';
+import LoginForm from "../../components/form/login-form/login-form";
+import SignupForm from "../../components/form/signup-form/sign-form";
 
-class AuthPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showRegisterForm: false
-        };
-    }
+function AuthPage() {
+  const [showRegisterForm, setShowRegistrationForm] = useState(false);
 
-    toggleAuthForm = () => {
-        this.setState(prevState => ({ showRegisterForm: !prevState.showRegisterForm }));
-    };
+  const toggleAuthForm = () => {
+    setShowRegistrationForm((showRegisterForm) => !showRegisterForm);
+  };
 
-    render() {
-        if (this.state.showRegisterForm) {
-            return <SignupForm showLoginForm={this.toggleAuthForm}/>;
-        }
+  if (showRegisterForm) {
+    return <SignupForm showLoginForm={toggleAuthForm} />;
+  }
 
-        return (
-            <div>
-                <LoginForm showRegisterForm={this.toggleAuthForm}/>
-            </div>
-        );
-    }
+  return <LoginForm showRegisterForm={toggleAuthForm} />;
 }
 
 export default AuthPage;

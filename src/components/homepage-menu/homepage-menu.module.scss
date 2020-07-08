@@ -1,18 +1,18 @@
 .homepageMenu {
-    display: flex;
-    flex-wrap: wrap;
-    width: 80%;
-    margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  margin: 0 auto;
 }
 
 @media (max-width: 1000px) {
-    .homepageMenu {
-        width: 95%;
-    }
+  .homepageMenu {
+    width: 95%;
+  }
 }
 
 @media (max-width: 850px) {
-    .homepageMenu {
-        width: 100%;
-    }
+  .homepageMenu {
+    width: 100%;
+  }
 }

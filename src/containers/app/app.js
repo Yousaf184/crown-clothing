@@ -1,72 +1,62 @@
-import React, { Component } from 'react';
-import { Router, Route } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Route, BrowserRouter } from "react-router-dom";
 
-import HomePage from '../homepage/homepage';
-import ShopPage from '../shopPage/shopPage';
-import AuthPage from '../authPage/authPage';
-import Header from '../../components/header/header';
+import HomePage from "../homepage/homepage";
+import ShopPage from "../shopPage/shopPage";
+import AuthPage from "../authPage/authPage";
+import Header from "../../components/header/header";
 
-import routerHistory from '../../utils/routerHistory';
-import { firebaseAuth, createUserDocument, fetchUser } from '../../utils/firebase';
+import {
+  firebaseAuth,
+  createUserDocument,
+  fetchUser
+} from "../../utils/firebase";
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentUser: null
+function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribeFromAuth = firebaseAuth.onAuthStateChanged((userAuth) => {
+      // only execute this code incase of google signin
+      if (userAuth && userAuth.displayName) {
+        const currentUser = {
+          id: userAuth.uid,
+          name: userAuth.displayName,
+          email: userAuth.email
         };
-    }
 
-    componentDidMount() {
-        this.unsubscribeFromAuth = firebaseAuth.onAuthStateChanged((userAuth) => {
-            // only execute this code incase of google signin
-            if (userAuth && userAuth.displayName) {
-                const currentUser = {
-                    id: userAuth.uid,
-                    name: userAuth.displayName,
-                    email: userAuth.email
-                };
-
-                this.setCurrentUser(currentUser);
-                createUserDocument(currentUser);
+        setCurrentUser(currentUser);
+        createUserDocument(currentUser);
+      }
+      // incase of email signin or signup
+      else if (userAuth) {
+        // fetch current user and set the currentUser in state
+        fetchUser(userAuth.uid)
+          .then((user) => {
+            if (user) {
+              setCurrentUser(user);
             }
-            // incase of email signin or signup
-            else if (userAuth) {
-                // fetch current user and set the currentUser in state
-                fetchUser(userAuth.uid)
-                    .then(user => {
-                        if (user) {
-                            this.setCurrentUser(user);
-                        }
-                    })
-                    .catch(error => console.log(error.message));
-            }
-        });
-    }
+          })
+          .catch((error) => console.log(error.message));
+      }
+    });
 
-    componentWillUnmount() {
-        this.unsubscribeFromAuth();
-    }
+    return () => unsubscribeFromAuth();
+  }, []);
 
-    signOut = () => {
-        this.setState({ currentUser: null });
-        firebaseAuth.signOut();
-    };
+  const signOut = () => {
+    firebaseAuth.signOut();
+    setCurrentUser(null);
+  };
 
-    setCurrentUser = (user) => {
-        this.setState({ currentUser: user });
-    }
-
-    render() {
-        return (
-            <Router history={routerHistory}>
-                <Header currentUser={this.state.currentUser} signOut={this.signOut}/>
-                <Route path="/" exact component={HomePage}/>
-                <Route path="/shop" exact component={ShopPage}/>
-                <Route path="/auth" exact component={AuthPage}/>
-            </Router>
-        );
-    }
+  return (
+    <BrowserRouter>
+      <Header currentUser={currentUser} signOut={signOut} />
+      <Route path="/" exact component={HomePage} />
+      <Route path="/shop" exact component={ShopPage} />
+      <Route path="/auth" exact component={AuthPage} />
+    </BrowserRouter>
+  );
 }
 
 export default App;

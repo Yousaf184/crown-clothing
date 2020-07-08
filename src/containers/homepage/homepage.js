@@ -1,10 +1,8 @@
-import React from 'react';
-import HomepageMenu from '../../components/homepage-menu/homepage-menu';
+import React from "react";
+import HomepageMenu from "../../components/homepage-menu/homepage-menu";
 
-function Homepage(props) {
-    return (
-        <HomepageMenu/>
-    );
+function Homepage() {
+  return <HomepageMenu />;
 }
 
 export default Homepage;

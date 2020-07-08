@@ -1,51 +1,47 @@
-import React, { Component } from 'react';
+import React from "react";
 
-import { renderFormInputs, isFormValid } from '../../utils/form';
+import useForm from "../../custom-hooks/useForm";
 
-import classes from './form.module.scss';
+import classes from "./form.module.scss";
 
-class Form extends Component {
-    render() {
-        const {
-            formTitle,
-            formSubtitle,
-            formObj,
-            thisObj,
-            formKey,
-            submitBtnLabel,
-            submitHandler,
-            errorMessage
-        } = this.props;
+function Form(props) {
+  const {
+    formTitle,
+    formSubtitle,
+    formObj,
+    submitBtnLabel,
+    submitHandler,
+    errorMessage
+  } = props;
 
-        return (
-            <React.Fragment>
-                {
-                    errorMessage &&
-                        <span className={classes.errorBlock}>{ errorMessage }</span>
-                }
+  const { renderFormInputs, isFormValid } = useForm(formObj);
 
-                <div className={classes.form}>
-                    <form onSubmit={submitHandler}>
-                        <h2>{ formTitle }</h2>
-                        <span className={classes.subtitle}>
-                            { formSubtitle }
-                        </span>
+  return (
+    <React.Fragment>
+      {errorMessage && (
+        <span className={classes.errorBlock}>{errorMessage}</span>
+      )}
 
-                        { renderFormInputs(formObj, thisObj, formKey) }
+      <div className={classes.form}>
+        <form onSubmit={submitHandler}>
+          <h2>{formTitle}</h2>
+          <span className={classes.subtitle}>{formSubtitle}</span>
 
-                        <button
-                            type="submit"
-                            className={classes.submitBtn}
-                            disabled={!isFormValid(formObj)}>
-                            { submitBtnLabel }
-                        </button>
-                    </form>
+          {renderFormInputs()}
 
-                    { this.props.children}
-                </div>
-            </React.Fragment>
-        );
-    }
+          <button
+            type="submit"
+            className={classes.submitBtn}
+            disabled={!isFormValid()}
+          >
+            {submitBtnLabel}
+          </button>
+        </form>
+
+        {props.children}
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Form;
