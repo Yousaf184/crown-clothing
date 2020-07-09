@@ -62,7 +62,7 @@ function LoginForm(props) {
         }
       })
       .catch((error) => console.log(error.message));
-  }, []);
+  }, [routerHistory]);
 
   const googleSignIn = () => {
     // after redirect from google sign in page, this value

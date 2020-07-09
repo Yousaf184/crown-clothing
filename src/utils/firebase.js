@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: "crown-clothing-1157e.appspot.com",
   messagingSenderId: "735648603094",
   appId: "1:735648603094:web:176be7dad0b8440ef12277",
-  measurementId: "G-SQG749CTV7",
+  measurementId: "G-SQG749CTV7"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -32,40 +32,14 @@ export function signupWithEmailAndPassword(email, password) {
   return firebaseAuth.createUserWithEmailAndPassword(email, password);
 }
 
-export async function createUserDocument(user) {
+// create user document if it doesn't already exists in the database
+export async function saveUserIfNotExists(user) {
   try {
     const userDocRef = firestore.collection("users").doc(user.id);
     const snapshot = await userDocRef.get();
 
     if (!snapshot.exists) {
       await userDocRef.set(user);
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-export async function fetchUser(userId) {
-  try {
-    const userDocRef = firestore.collection("users").doc(userId);
-    const snapshot = await userDocRef.get();
-
-    if (snapshot.exists) {
-      return snapshot.data();
-    } else {
-      /**
-       * when a user creates an account using email/password, fetchUser
-       * function will be called immediately after user is logged in.
-       * there may be a case where user info hasn't been saved in database
-       * yet, so in this case, wait for 1 second and then read the newly
-       * created user's info and resolve the promise
-       */
-      return new Promise((resolve, reject) => {
-        setTimeout(async () => {
-          const snapshot = await userDocRef.get();
-          resolve(snapshot.data());
-        }, 1000);
-      });
     }
   } catch (error) {
     console.log(error.message);

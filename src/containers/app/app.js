@@ -1,43 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
 
+import AuthContextProvider from "../../contexts/authContext";
+
 import HomePage from "../homepage/homepage";
 import ShopPage from "../shopPage/shopPage";
 import AuthPage from "../authPage/authPage";
 import Header from "../../components/header/header";
 
-import {
-  firebaseAuth,
-  createUserDocument,
-  fetchUser
-} from "../../utils/firebase";
+import { firebaseAuth, saveUserIfNotExists } from "../../utils/firebase";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const unsubscribeFromAuth = firebaseAuth.onAuthStateChanged((userAuth) => {
-      // only execute this code incase of google signin
-      if (userAuth && userAuth.displayName) {
-        const currentUser = {
+      if (userAuth) {
+        const user = {
           id: userAuth.uid,
           name: userAuth.displayName,
           email: userAuth.email
         };
 
-        setCurrentUser(currentUser);
-        createUserDocument(currentUser);
-      }
-      // incase of email signin or signup
-      else if (userAuth) {
-        // fetch current user and set the currentUser in state
-        fetchUser(userAuth.uid)
-          .then((user) => {
-            if (user) {
-              setCurrentUser(user);
-            }
-          })
-          .catch((error) => console.log(error.message));
+        setCurrentUser(user);
+        saveUserIfNotExists(user);
       }
     });
 
@@ -50,12 +36,18 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <Header currentUser={currentUser} signOut={signOut} />
-      <Route path="/" exact component={HomePage} />
-      <Route path="/shop" exact component={ShopPage} />
-      <Route path="/auth" exact component={AuthPage} />
-    </BrowserRouter>
+    <AuthContextProvider
+      currentUser={currentUser}
+      setCurrentUser={setCurrentUser}
+      signOut={signOut}
+    >
+      <BrowserRouter>
+        <Header />
+        <Route path="/" exact component={HomePage} />
+        <Route path="/shop" exact component={ShopPage} />
+        <Route path="/auth" exact component={AuthPage} />
+      </BrowserRouter>
+    </AuthContextProvider>
   );
 }
 

@@ -5,7 +5,7 @@ import Form from "../form";
 import Spinner from "../../spinner/spinner";
 
 import {
-  createUserDocument,
+  saveUserIfNotExists,
   signupWithEmailAndPassword
 } from "../../../utils/firebase";
 import {
@@ -95,19 +95,20 @@ function SignupForm(props) {
     event.preventDefault();
     setSignupInProgress(true);
 
-    const email = signupForm.email.value;
-    const password = signupForm.password.value;
+    const name = event.target.elements["name"].value;
+    const email = event.target.elements["email"].value;
+    const password = event.target.elements["password"].value;
 
     signupWithEmailAndPassword(email, password)
       .then((result) => {
         if (result.user) {
           const newUser = {
             id: result.user.uid,
-            name: signupForm.name.value,
-            email: email
+            name,
+            email
           };
 
-          createUserDocument(newUser);
+          saveUserIfNotExists(newUser);
           routerHistory.replace("/");
         }
       })
