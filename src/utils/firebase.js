@@ -43,5 +43,36 @@ export async function saveUserIfNotExists(user) {
     }
   } catch (error) {
     console.log(error.message);
+    throw error;
+  }
+}
+
+/* called when user signs up using email-password
+ *
+ * as saveUserIfNotExists function saves the user in the
+ * database, this function just calls that function
+ */
+export async function saveNewUser(newUser) {
+  try {
+    await saveUserIfNotExists(newUser);
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+}
+
+export async function getUserByID(userID) {
+  try {
+    const userDocRef = firestore.collection("users").doc(userID);
+    const querySnapshot = await userDocRef.get();
+
+    if (querySnapshot.exists) {
+      return querySnapshot.data();
+    } else {
+      throw new Error(`User with the id: (${userID}) doesn't exists`);
+    }
+  } catch (error) {
+    console.log(error.message);
+    throw error;
   }
 }

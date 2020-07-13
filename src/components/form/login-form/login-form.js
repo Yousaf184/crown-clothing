@@ -3,46 +3,20 @@ import { useHistory } from "react-router-dom";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
-import { requiredRule } from "../../../utils/inputValidationRules";
 
 import {
   signInWithGoogle,
   firebaseAuth,
   signInWithEmail
 } from "../../../utils/firebase";
+import { loginForm } from "../../../utils/formConfig";
 
+// key for localStorage
 const LOGIN_IN_PROGRESS_KEY = "loginInProgress";
-const loginFormObj = {
-  email: {
-    label: "Email",
-    inputConfig: {
-      name: "email",
-      type: "email"
-    },
-    validationRules: [requiredRule("email")],
-    value: "",
-    valid: false,
-    errorMessage: "",
-    touched: false
-  },
-  password: {
-    label: "Password",
-    inputConfig: {
-      name: "password",
-      type: "password"
-    },
-    validationRules: [requiredRule("password")],
-    value: "",
-    valid: false,
-    errorMessage: "",
-    touched: false
-  }
-};
 
 function LoginForm(props) {
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [loginForm] = useState(loginFormObj);
   const routerHistory = useHistory();
 
   useEffect(() => {
@@ -57,7 +31,6 @@ function LoginForm(props) {
       .getRedirectResult()
       .then((result) => {
         if (result.user) {
-          // redirect user to home page after google sign in
           routerHistory.replace("/");
         }
       })

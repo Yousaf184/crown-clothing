@@ -21,4 +21,4 @@ function HomepageMenu() {
   );
 }
 
-export default HomepageMenu;
+export default React.memo(HomepageMenu);
