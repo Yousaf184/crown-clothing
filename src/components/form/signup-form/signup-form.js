@@ -7,6 +7,7 @@ import Spinner from "../../spinner/spinner";
 
 import { signupWithEmailAndPassword } from "../../../utils/firebase";
 import { signupForm } from "../../../utils/formConfig";
+import CustomButton from "../../custom-button/CustomButton";
 
 function SignupForm(props) {
   const [signupInProgress, setSignupInProgress] = useState(false);
@@ -54,9 +55,14 @@ function SignupForm(props) {
       errorMessage={errorMessage}
     >
       <span>Already have an account?</span>
-      <button className="authFormToggleBtn" onClick={props.showLoginForm}>
+      <CustomButton
+        className="authFormToggleBtn"
+        clickHandler={props.showLoginForm}
+        outlineBtn="true"
+        leftMargin="10px"
+      >
         Login
-      </button>
+      </CustomButton>
     </Form>
   );
 }

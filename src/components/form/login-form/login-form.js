@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
+import CustomButton from "../../custom-button/CustomButton";
 
 import {
   signInWithGoogle,
@@ -77,13 +78,22 @@ function LoginForm(props) {
       submitHandler={handleSubmit}
       errorMessage={errorMessage}
     >
-      <button className="googleSignInBtn" onClick={googleSignIn}>
+      <CustomButton
+        className="googleSignInBtn"
+        clickHandler={googleSignIn}
+        blockBtn={true}
+      >
         Sign in with Google
-      </button>
+      </CustomButton>
       <span>Don't have an account?</span>
-      <button className="authFormToggleBtn" onClick={props.showRegisterForm}>
+      <CustomButton
+        className="authFormToggleBtn"
+        clickHandler={props.showRegisterForm}
+        outlineBtn="true"
+        leftMargin="10px"
+      >
         Register
-      </button>
+      </CustomButton>
     </Form>
   );
 }
