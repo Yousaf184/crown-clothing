@@ -8,35 +8,23 @@ import ShopPage from "../shopPage/shopPage";
 import AuthPage from "../authPage/authPage";
 import Header from "../../components/header/header";
 
-import {
-  firebaseAuth,
-  saveUserIfNotExists,
-  getUserByID
-} from "../../utils/firebase";
+import { firebaseAuth, saveUserIfNotExists } from "../../utils/firebase";
+
+let unsubscribeFromSnapshot;
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  // used to prevent fetching user data from database on signup
-  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(async (userAuth) => {
       try {
-        if (
-          userAuth &&
-          userAuth.providerData[0].providerId.includes("google")
-        ) {
-          const user = {
-            id: userAuth.uid,
-            name: userAuth.displayName,
-            email: userAuth.email
-          };
-
-          setCurrentUser(await saveUserIfNotExists(user));
-        } else if (userAuth && !isSignUp) {
-          // fetch user details from database
-          // incase of user login with email/password
-          setCurrentUser(await getUserByID(userAuth.uid));
+        if (userAuth) {
+          // get the user document reference object
+          const userDocRef = await saveUserIfNotExists({ id: userAuth.uid });
+          // called whenever the document reference object (userDocRef) updates
+          unsubscribeFromSnapshot = userDocRef.onSnapshot((userDocSnapshot) => {
+            setCurrentUser(userDocSnapshot.data());
+          });
         }
       } catch (error) {
         console.log(error.message);
@@ -44,9 +32,10 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, [isSignUp]);
+  }, []);
 
   const signOut = () => {
+    unsubscribeFromSnapshot();
     firebaseAuth.signOut();
     setCurrentUser(null);
   };
@@ -57,7 +46,6 @@ function App() {
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
         signOut={signOut}
-        setIsSignUp={setIsSignUp}
       >
         <Header />
         <Route path="/" exact component={HomePage} />

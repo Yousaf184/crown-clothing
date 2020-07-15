@@ -8,7 +8,8 @@ import CustomButton from "../../custom-button/CustomButton";
 import {
   signInWithGoogle,
   firebaseAuth,
-  signInWithEmail
+  signInWithEmail,
+  saveUserIfNotExists
 } from "../../../utils/firebase";
 import { loginForm } from "../../../utils/formConfig";
 
@@ -30,39 +31,40 @@ function LoginForm(props) {
 
     firebaseAuth
       .getRedirectResult()
-      .then((result) => {
+      .then(async (result) => {
         if (result.user) {
+          const { uid, displayName, email } = result.user;
+          const user = { id: uid, name: displayName, email };
+          await saveUserIfNotExists(user);
           routerHistory.replace("/");
         }
       })
       .catch((error) => console.log(error.message));
   }, [routerHistory]);
 
-  const googleSignIn = () => {
+  const googleSignIn = async () => {
     // after redirect from google sign in page, this value
     // in localStorage will be used to determine whether to show spinner
     localStorage.setItem(LOGIN_IN_PROGRESS_KEY, true);
     setLoginInProgress(true);
+
     signInWithGoogle();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setLoginInProgress(true);
 
     const email = event.target.elements["email"].value;
     const password = event.target.elements["password"].value;
 
-    signInWithEmail(email, password)
-      .then((result) => {
-        if (result.user) {
-          routerHistory.replace("/");
-        }
-      })
-      .catch((error) => {
-        setErrorMessage("incorrect email/password combination");
-        setLoginInProgress(false);
-      });
+    try {
+      await signInWithEmail(email, password);
+      routerHistory.replace("/");
+    } catch (error) {
+      setErrorMessage("incorrect email/password combination");
+      setLoginInProgress(false);
+    }
   };
 
   if (loginInProgress) {

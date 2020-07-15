@@ -34,17 +34,24 @@ export function signupWithEmailAndPassword(email, password) {
 
 // create user document if it doesn't already exists in the database
 export async function saveUserIfNotExists(user) {
+  let userDocRef = firestore.collection("users").doc(user.id);
+
   try {
-    const userDocRef = firestore.collection("users").doc(user.id);
     const snapshot = await userDocRef.get();
 
-    if (!snapshot.exists) {
+    // user object will have only id property when this function
+    // is called from 'App' component from inside of 'onAuthStateChanged'
+    // function. In this case, don't save the user and just return the
+    // document reference object so that 'onSnapshot' function can be called
+    // on the returned document reference object
+    if (!snapshot.exists && user.email) {
       await userDocRef.set(user);
     }
   } catch (error) {
-    console.log(error.message);
     throw error;
   }
+
+  return userDocRef;
 }
 
 /* called when user signs up using email-password
@@ -56,7 +63,6 @@ export async function saveNewUser(newUser) {
   try {
     await saveUserIfNotExists(newUser);
   } catch (error) {
-    console.log(error.message);
     throw error;
   }
 }
@@ -64,15 +70,14 @@ export async function saveNewUser(newUser) {
 export async function getUserByID(userID) {
   try {
     const userDocRef = firestore.collection("users").doc(userID);
-    const querySnapshot = await userDocRef.get();
+    const snapshot = await userDocRef.get();
 
-    if (querySnapshot.exists) {
-      return querySnapshot.data();
+    if (snapshot.exists) {
+      return snapshot.data();
     } else {
       throw new Error(`User with the id: (${userID}) doesn't exists`);
     }
   } catch (error) {
-    console.log(error.message);
     throw error;
   }
 }

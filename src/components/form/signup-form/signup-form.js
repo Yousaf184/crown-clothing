@@ -1,44 +1,37 @@
-import React, { useState, useContext } from "react";
-
-import { AuthContext } from "../../../contexts/authContext";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
 
-import { signupWithEmailAndPassword } from "../../../utils/firebase";
+import {
+  signupWithEmailAndPassword,
+  saveNewUser
+} from "../../../utils/firebase";
 import { signupForm } from "../../../utils/formConfig";
 import CustomButton from "../../custom-button/CustomButton";
 
 function SignupForm(props) {
   const [signupInProgress, setSignupInProgress] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const authContext = useContext(AuthContext);
+  const routerHistory = useHistory();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setSignupInProgress(true);
-    authContext.setIsSignUp(true);
 
     const name = event.target.elements["name"].value;
     const email = event.target.elements["email"].value;
     const password = event.target.elements["password"].value;
 
-    signupWithEmailAndPassword(email, password)
-      .then((result) => {
-        if (result.user) {
-          const newUser = {
-            id: result.user.uid,
-            name,
-            email
-          };
-
-          authContext.onUserSignup(newUser);
-        }
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-        setSignupInProgress(false);
-      });
+    try {
+      const result = await signupWithEmailAndPassword(email, password);
+      await saveNewUser({ id: result.user.uid, name, email });
+      routerHistory.replace("/");
+    } catch (error) {
+      setErrorMessage(error.message);
+      setSignupInProgress(false);
+    }
   };
 
   if (signupInProgress) {
