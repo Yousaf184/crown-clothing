@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "../../assets/crown.svg";
-import classes from "./header.module.scss";
+import { connect } from "react-redux";
+
 import { AuthContext } from "../../contexts/authContext";
 
-function Header() {
-  const { currentUser, signOut } = useContext(AuthContext);
+import { ReactComponent as Logo } from "../../assets/crown.svg";
+import classes from "./header.module.scss";
+
+function Header(props) {
+  const { signOut } = useContext(AuthContext);
 
   let conditionalNavItem = (
     <Link to="/auth" className={classes.navItem}>
@@ -13,7 +16,7 @@ function Header() {
     </Link>
   );
 
-  if (currentUser) {
+  if (props.user) {
     conditionalNavItem = (
       <span className={classes.navItem} onClick={signOut}>
         Sign out
@@ -39,4 +42,8 @@ function Header() {
   );
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  user: state.userReducer.user
+});
+
+export default connect(mapStateToProps, null)(Header);

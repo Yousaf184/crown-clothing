@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 import AuthContextProvider from "../../contexts/authContext";
 
@@ -10,10 +11,13 @@ import Header from "../../components/header/header";
 
 import { firebaseAuth, saveUserIfNotExists } from "../../utils/firebase";
 
+import { createAction } from "../../redux/actions/actions";
+import { SET_CURRENT_USER } from "../../redux/actions/actionTypes";
+
 let unsubscribeFromSnapshot;
 
-function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+function App(props) {
+  const { setCurrentUser } = props;
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(async (userAuth) => {
@@ -32,7 +36,7 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [setCurrentUser]);
 
   const signOut = () => {
     unsubscribeFromSnapshot();
@@ -42,11 +46,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AuthContextProvider
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-        signOut={signOut}
-      >
+      <AuthContextProvider signOut={signOut}>
         <Header />
         <Route path="/" exact component={HomePage} />
         <Route path="/shop" exact component={ShopPage} />
@@ -56,4 +56,8 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(createAction(SET_CURRENT_USER, { user }))
+});
+
+export default connect(null, mapDispatchToProps)(App);
