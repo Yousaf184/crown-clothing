@@ -11,7 +11,7 @@ import Header from "../../components/header/header";
 
 import { firebaseAuth, saveUserIfNotExists } from "../../utils/firebase";
 
-import { createAction } from "../../redux/actions/actions";
+import { createAction } from "../../redux/actions/common";
 import { SET_CURRENT_USER } from "../../redux/actions/actionTypes";
 
 let unsubscribeFromSnapshot;

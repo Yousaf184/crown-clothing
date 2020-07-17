@@ -9,6 +9,7 @@
   padding: 0 20px;
   box-sizing: border-box;
   border-radius: 5px;
+  position: relative;
 
   .logoContainer {
     width: 70px;
@@ -20,7 +21,7 @@
     justify-content: space-between;
 
     .navItem {
-      padding: 10px 0 10px 20px;
+      margin: 10px 0 10px 20px;
       cursor: pointer;
     }
   }

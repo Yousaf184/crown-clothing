@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
-import CustomButton from "../../custom-button/CustomButton";
+import FormToggler from "../form-toggler/formToggler";
 
 import {
   signInWithGoogle,
@@ -12,6 +12,8 @@ import {
   saveUserIfNotExists
 } from "../../../utils/firebase";
 import { loginForm } from "../../../utils/formConfig";
+
+import classes from "./loginForm.module.scss";
 
 // key for localStorage
 const LOGIN_IN_PROGRESS_KEY = "loginInProgress";
@@ -80,22 +82,15 @@ function LoginForm(props) {
       submitHandler={handleSubmit}
       errorMessage={errorMessage}
     >
-      <CustomButton
-        className="googleSignInBtn"
-        clickHandler={googleSignIn}
-        blockBtn={true}
-      >
+      <button className={classes.googleSignInBtn} onClick={googleSignIn}>
         Sign in with Google
-      </CustomButton>
-      <span>Don't have an account?</span>
-      <CustomButton
-        className="authFormToggleBtn"
+      </button>
+      <FormToggler
+        label="Don't have an account?"
         clickHandler={props.showRegisterForm}
-        outlineBtn="true"
-        leftMargin="10px"
-      >
-        Register
-      </CustomButton>
+        btnLabel="Register"
+        btnClasses="outline"
+      />
     </Form>
   );
 }

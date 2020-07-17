@@ -3,13 +3,13 @@ import { useHistory } from "react-router-dom";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
+import FormToggler from "../form-toggler/formToggler";
 
 import {
   signupWithEmailAndPassword,
   saveNewUser
 } from "../../../utils/firebase";
 import { signupForm } from "../../../utils/formConfig";
-import CustomButton from "../../custom-button/CustomButton";
 
 function SignupForm(props) {
   const [signupInProgress, setSignupInProgress] = useState(false);
@@ -47,15 +47,12 @@ function SignupForm(props) {
       submitHandler={handleSubmit}
       errorMessage={errorMessage}
     >
-      <span>Already have an account?</span>
-      <CustomButton
-        className="authFormToggleBtn"
+      <FormToggler
+        label="Already have an account?"
         clickHandler={props.showLoginForm}
-        outlineBtn="true"
-        leftMargin="10px"
-      >
-        Login
-      </CustomButton>
+        btnLabel="Login"
+        btnClasses="outline"
+      />
     </Form>
   );
 }

@@ -3,7 +3,6 @@ import React from "react";
 import useForm from "../../custom-hooks/useForm";
 
 import classes from "./form.module.scss";
-import CustomButton from "../custom-button/CustomButton";
 
 function Form(props) {
   const {
@@ -30,13 +29,14 @@ function Form(props) {
 
           {renderFormInputs()}
 
-          <CustomButton
+          <button
             type="submit"
             className={classes.submitBtn}
             disabled={!isFormValid()}
+            style={{ marginTop: "20px" }}
           >
             {submitBtnLabel}
-          </CustomButton>
+          </button>
         </form>
 
         {props.children}
