@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { userReducer } from "./user";
-import { cartDropdownReducer } from "./cart";
+import { cartReducer } from "./cart";
 
 const rootReducer = combineReducers({
   userReducer,
-  cartDropdownReducer
+  cartReducer
 });
 
 export default rootReducer;

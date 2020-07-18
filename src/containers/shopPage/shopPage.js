@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import CollectionPreview from "../../components/collection-preview/collection-preview";
-import SHOP_DATA from "./shop-data";
+import SHOP_DATA from "../../data/shop_data";
 
 function ShopPage() {
   const [collections] = useState(SHOP_DATA);

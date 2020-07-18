@@ -4,6 +4,19 @@
   flex-direction: column;
   height: 350px;
   align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    opacity: 0.75;
+
+    .addToCartBtn {
+      opacity: 1;
+      animation: animateAddToCartBtn 0.3s ease;
+    }
+  }
 
   @media (max-width: 780px) {
     & {
@@ -23,22 +36,45 @@
     background-size: cover;
     background-position: center;
     margin-bottom: 5px;
+    border-radius: 4px;
   }
 
   .collectionFooter {
     width: 100%;
-    height: 5%;
-    padding: 0 0 25px;
+    padding: 10px 8px;
     display: flex;
     justify-content: space-between;
     font-size: 18px;
+    box-sizing: border-box;
 
     .name {
-      width: 90%;
+      flex-basis: 85%;
     }
 
     .price {
-      width: 10%;
+      flex-basis: 15%;
+      text-align: right;
     }
+  }
+
+  .addToCartBtn {
+    position: absolute;
+    top: 250px;
+    background: #fff;
+    opacity: 0;
+    border: none;
+
+    &:hover {
+      background-color: #000;
+    }
+  }
+}
+
+@keyframes animateAddToCartBtn {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1);
   }
 }
