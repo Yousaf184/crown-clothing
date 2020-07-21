@@ -1,17 +1,16 @@
 import React, { useCallback } from "react";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { createAction } from "../../redux/actions/common";
-import { ADD_ITEM_TO_CART } from "../../redux/actions/actionTypes";
+import { addItemToCart } from "../../redux/actions/cart";
 
 import CollectionItem from "./collection-item/collection-item";
 
 import classes from "./collection-preview.module.scss";
 
 function CollectionPreview(props) {
-  const { addToCart } = props;
+  const disptach = useDispatch();
 
-  const addItemToCart = useCallback(
+  const addToCart = useCallback(
     (event) => {
       const clickedBtn = event.target;
 
@@ -20,14 +19,14 @@ function CollectionPreview(props) {
       clickedBtn.textContent = "Done";
 
       const itemToAdd = JSON.parse(clickedBtn.dataset.item);
-      addToCart(itemToAdd);
+      disptach(addItemToCart(itemToAdd));
 
       // change the text of the button back to original value
       setTimeout(() => {
         clickedBtn.textContent = "Add To Cart";
       }, 1500);
     },
-    [addToCart]
+    [disptach]
   );
 
   return (
@@ -40,7 +39,7 @@ function CollectionPreview(props) {
             <CollectionItem
               key={item.id}
               item={item}
-              addItemToCart={addItemToCart}
+              addItemToCart={addToCart}
             />
           ))}
       </div>
@@ -48,8 +47,4 @@ function CollectionPreview(props) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  addToCart: (item) => dispatch(createAction(ADD_ITEM_TO_CART, { item }))
-});
-
-export default connect(null, mapDispatchToProps)(CollectionPreview);
+export default CollectionPreview;

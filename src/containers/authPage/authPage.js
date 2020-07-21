@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import LoginForm from "../../components/form/login-form/login-form";
 import SignupForm from "../../components/form/signup-form/signup-form";
 
-function AuthPage(props) {
+function AuthPage() {
   const [showRegisterForm, setShowRegistrationForm] = useState(false);
+  const user = useSelector((state) => state.userReducer.user);
   let componentToRender;
 
   const toggleAuthForm = () => {
@@ -14,7 +15,7 @@ function AuthPage(props) {
   };
 
   // if user is logged in, redirect to home page
-  if (props.user) {
+  if (user) {
     componentToRender = <Redirect to="/" />;
   } else if (showRegisterForm) {
     componentToRender = <SignupForm showLoginForm={toggleAuthForm} />;
@@ -25,8 +26,4 @@ function AuthPage(props) {
   return componentToRender;
 }
 
-const mapStateToProps = (state) => ({
-  user: state.userReducer.user
-});
-
-export default connect(mapStateToProps, null)(AuthPage);
+export default AuthPage;

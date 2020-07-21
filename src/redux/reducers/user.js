@@ -9,7 +9,7 @@ export function userReducer(state = initialState, action) {
 
   switch (type) {
     case SET_CURRENT_USER:
-      return { ...state, user: payload.user };
+      return { ...state, user: payload };
     default:
       return state;
   }

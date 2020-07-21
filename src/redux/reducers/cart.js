@@ -1,4 +1,4 @@
-import { OPEN_CART_DROPDOWN, ADD_ITEM_TO_CART } from "../actions/actionTypes";
+import { TOGGLE_CART_DROPDOWN, ADD_ITEM_TO_CART } from "../actions/actionTypes";
 import { addItemToCart } from "../../utils/cart";
 
 const initialState = {
@@ -7,16 +7,16 @@ const initialState = {
 };
 
 export function cartReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const { type, payload: item } = action;
 
   switch (type) {
-    case OPEN_CART_DROPDOWN:
+    case TOGGLE_CART_DROPDOWN:
       return { ...state, openCartDropdown: !state.openCartDropdown };
 
     case ADD_ITEM_TO_CART:
       return {
         ...state,
-        cartItems: addItemToCart(state.cartItems, payload.item)
+        cartItems: addItemToCart(state.cartItems, item)
       };
 
     default:

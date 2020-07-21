@@ -1,15 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 import CartItem from "../cart-item/cartItem";
 
 import classes from "./cartDropdown.module.scss";
 
-function CartDropdown(props) {
+function CartDropdown() {
+  const cartItems = useSelector((state) => state.cartReducer.cartItems);
+
   return (
     <div className={classes.cartDropdown}>
       <div className={classes.cartItems}>
-        {props.cartItems.map((item) => (
+        {cartItems.map((item) => (
           <CartItem key={item.id} item={item} />
         ))}
       </div>
@@ -18,8 +20,4 @@ function CartDropdown(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  cartItems: state.cartReducer.cartItems
-});
-
-export default connect(mapStateToProps, null)(CartDropdown);
+export default CartDropdown;
