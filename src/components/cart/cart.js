@@ -13,15 +13,18 @@ function Cart() {
   const openCartDropdown = useSelector(
     (state) => state.cartReducer.openCartDropdown
   );
+  const cartItemsCount = useSelector(
+    (state) => state.cartReducer.cartItemsCount
+  );
 
   const toggleDropdown = () => {
     disptach(toggleCartDropdown());
   };
 
   return (
-    <div className={classes.cartIcon} onClick={toggleDropdown}>
+    <div className={classes.cart} onClick={toggleDropdown}>
       <ShoppingBagIcon className={classes.icon} />
-      <span className={classes.itemCount}>0</span>
+      <span className={classes.itemCount}>{cartItemsCount}</span>
 
       {openCartDropdown && <CartDropdown />}
     </div>

@@ -3,7 +3,8 @@ import { addItemToCart } from "../../utils/cart";
 
 const initialState = {
   openCartDropdown: false,
-  cartItems: []
+  cartItems: [],
+  cartItemsCount: 0
 };
 
 export function cartReducer(state = initialState, action) {
@@ -16,7 +17,8 @@ export function cartReducer(state = initialState, action) {
     case ADD_ITEM_TO_CART:
       return {
         ...state,
-        cartItems: addItemToCart(state.cartItems, item)
+        cartItems: addItemToCart(state.cartItems, item),
+        cartItemsCount: state.cartItemsCount + 1
       };
 
     default:
