@@ -10,10 +10,22 @@ import classes from "./collection-preview.module.scss";
 
 function CollectionPreview(props) {
   const { addToCart } = props;
+
   const addItemToCart = useCallback(
     (event) => {
-      const itemToAdd = JSON.parse(event.target.dataset.item);
+      const clickedBtn = event.target;
+
+      // change the text of the button to indicate
+      // that item has been added to the cart
+      clickedBtn.textContent = "Done";
+
+      const itemToAdd = JSON.parse(clickedBtn.dataset.item);
       addToCart(itemToAdd);
+
+      // change the text of the button back to original value
+      setTimeout(() => {
+        clickedBtn.textContent = "Add To Cart";
+      }, 1500);
     },
     [addToCart]
   );
