@@ -1,35 +1,59 @@
+@import "../../../sass-variables.scss";
+
 .checkoutItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: $checkout-content-maxWidth;
+  margin: 0 auto;
 
   &:not(:first-child) {
-    border-top: 1px solid rgb(207, 204, 204);
+    border-top: 1px solid $checkout-border-color;
   }
 
   .imgContainer {
-    flex-basis: 23%;
     padding: 10px 0 10px 10px;
-    box-sizing: border-box;
 
     img {
-      width: 80%;
+      width: 50%;
       border-radius: 4px;
     }
   }
 
-  span {
+  .col {
     flex-basis: 23%;
-  }
-
-  span:nth-of-type(2),
-  span:nth-of-type(4) {
     position: relative;
-    left: 17px;
-  }
+    box-sizing: border-box;
+    text-align: center;
 
-  span:last-child {
-    flex-basis: 8%;
-    cursor: pointer;
+    &:last-child {
+      flex-basis: 8%;
+      cursor: pointer;
+    }
+
+    &.quantityCol {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      .upArrow,
+      .downArrow {
+        cursor: pointer;
+        position: relative;
+        font-size: 1.2rem;
+      }
+
+      .upArrow {
+        transform: rotate(90deg);
+        left: 2px;
+        top: 2px;
+      }
+
+      .downArrow {
+        transform: rotate(270deg);
+        top: 1px;
+      }
+    }
   }
 }

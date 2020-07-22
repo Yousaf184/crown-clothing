@@ -1,0 +1,14 @@
+@import "../../../sass-variables.scss";
+
+.total {
+  box-sizing: border-box;
+  padding: 10px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-color: $checkout-border-color;
+  text-align: right;
+  font-size: 1.8rem;
+  font-weight: bold;
+  max-width: $checkout-content-maxWidth;
+  margin: 0 auto;
+}

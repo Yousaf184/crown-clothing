@@ -2,8 +2,14 @@ import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import CheckoutItem from "../../components/checkout/checkout-item/checkoutItem";
+import CheckoutHeader from "../../components/checkout/checkout-header/checkoutHeader";
+import CheckoutTotal from "../../components/checkout/checkout-total/checkoutTotal";
 
-import { removeItemFromCart } from "../../redux/actions/cart";
+import {
+  removeItemFromCart,
+  increaseCartItemQuantity,
+  decreaseCartItemQuantity
+} from "../../redux/actions/cart";
 
 import classes from "./checkoutPage.module.scss";
 
@@ -18,27 +24,31 @@ function CheckoutPage() {
     [dispatch]
   );
 
+  const increaseItemQuantity = useCallback(
+    (item) => dispatch(increaseCartItemQuantity(item)),
+    [dispatch]
+  );
+
+  const decreaseItemQuantity = useCallback(
+    (item) => dispatch(decreaseCartItemQuantity(item)),
+    [dispatch]
+  );
+
   return (
     <div className={classes.checkoutPage}>
-      <div className={classes.checkoutHeader}>
-        <span>Product</span>
-        <span>Name</span>
-        <span>Quantity</span>
-        <span>Price</span>
-        <span>Remove</span>
-      </div>
+      <CheckoutHeader />
       <div>
         {cartItems.map((item) => (
           <CheckoutItem
             key={item.id}
             item={item}
             removeItemFromCheckout={removeCartItem}
+            increaseItemQuantity={increaseItemQuantity}
+            decreaseItemQuantity={decreaseItemQuantity}
           />
         ))}
       </div>
-      <div className={classes.total}>
-        <span>Total: ${cartItemsTotal}</span>
-      </div>
+      <CheckoutTotal cartItemsTotal={cartItemsTotal} />
     </div>
   );
 }

@@ -1,0 +1,21 @@
+@import "../../../sass-variables.scss";
+
+.checkoutHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0 6px 0;
+  border-bottom: 2px solid $checkout-border-color;
+  margin: 0 auto 6px;
+  max-width: $checkout-content-maxWidth;
+
+  span {
+    flex-basis: 23%;
+    font-weight: bold;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  span:last-child {
+    flex-basis: 8%;
+  }
+}
