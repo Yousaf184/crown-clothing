@@ -1,10 +1,15 @@
-import { TOGGLE_CART_DROPDOWN, ADD_ITEM_TO_CART } from "../actions/actionTypes";
-import { addItemToCart } from "../../utils/cart";
+import {
+  TOGGLE_CART_DROPDOWN,
+  ADD_ITEM_TO_CART,
+  REMOVE_ITEM_FROM_CART
+} from "../actions/actionTypes";
+import { addItemToCart, removeItemFromCart } from "../../utils/cart";
 
 const initialState = {
   openCartDropdown: false,
   cartItems: [],
-  cartItemsCount: 0
+  cartItemsCount: 0,
+  total: 0
 };
 
 export function cartReducer(state = initialState, action) {
@@ -18,7 +23,16 @@ export function cartReducer(state = initialState, action) {
       return {
         ...state,
         cartItems: addItemToCart(state.cartItems, item),
-        cartItemsCount: state.cartItemsCount + 1
+        cartItemsCount: state.cartItemsCount + 1,
+        total: state.total + item.price
+      };
+
+    case REMOVE_ITEM_FROM_CART:
+      return {
+        ...state,
+        cartItems: removeItemFromCart(state.cartItems, item),
+        cartItemsCount: state.cartItemsCount - 1,
+        total: state.total - item.quantity * item.price
       };
 
     default:

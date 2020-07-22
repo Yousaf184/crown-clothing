@@ -17,3 +17,11 @@ export function addItemToCart(cartItemsArr, itemToAdd) {
 
   return updatedCartItems;
 }
+
+export function removeItemFromCart(cartItemsArr, itemToRemove) {
+  const updatedCartItems = cartItemsArr.filter(
+    (item) => item.id !== itemToRemove.id
+  );
+
+  return updatedCartItems;
+}

@@ -1,0 +1,35 @@
+.checkoutItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:not(:first-child) {
+    border-top: 1px solid rgb(207, 204, 204);
+  }
+
+  .imgContainer {
+    flex-basis: 23%;
+    padding: 10px 0 10px 10px;
+    box-sizing: border-box;
+
+    img {
+      width: 80%;
+      border-radius: 4px;
+    }
+  }
+
+  span {
+    flex-basis: 23%;
+  }
+
+  span:nth-of-type(2),
+  span:nth-of-type(4) {
+    position: relative;
+    left: 17px;
+  }
+
+  span:last-child {
+    flex-basis: 8%;
+    cursor: pointer;
+  }
+}

@@ -6,6 +6,7 @@ import HomePage from "../homepage/homepage";
 import ShopPage from "../shopPage/shopPage";
 import AuthPage from "../authPage/authPage";
 import Header from "../../components/header/header";
+import CheckoutPage from "../checkoutPage/checkoutPage";
 
 import { firebaseAuth, saveUserIfNotExists } from "../../utils/firebase";
 
@@ -44,9 +45,10 @@ function App() {
   return (
     <BrowserRouter>
       <Header signOut={signOut} />
-      <Route path="/" exact component={HomePage} />
+      <Route exact path="/" component={HomePage} />
+      <Route exact path="/auth" component={AuthPage} />
+      <Route exact path="/checkout" component={CheckoutPage} />
       <Route path="/shop" exact component={ShopPage} />
-      <Route path="/auth" exact component={AuthPage} />
     </BrowserRouter>
   );
 }

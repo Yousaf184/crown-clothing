@@ -1,0 +1,37 @@
+.checkoutPage {
+  width: 95%;
+  margin: 0 auto;
+
+  .checkoutHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0 6px 0;
+    border-bottom: 2px solid rgb(207, 204, 204);
+    margin: 0 0 6px 0;
+
+    span {
+      flex-basis: 23%;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    span:first-child {
+      padding-left: 10px;
+    }
+
+    span:last-child {
+      flex-basis: 8%;
+      padding-right: 10px;
+    }
+  }
+
+  .total {
+    padding: 10px;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    border-color: rgb(207, 204, 204);
+    text-align: right;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+}
