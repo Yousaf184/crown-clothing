@@ -1,15 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import "./index.scss";
+import { PersistGate } from "redux-persist/integration/react";
+
 import App from "./containers/app/app";
-import reduxStore from "./redux/store";
+import Spinner from "./components/spinner/spinner";
+import { reduxStore, persistorStore } from "./redux/store";
+
 import * as serviceWorker from "./serviceWorker";
+
+import "./index.scss";
 
 ReactDOM.render(
   // <React.StrictMode>
   <Provider store={reduxStore}>
-    <App />
+    <PersistGate loading={<Spinner />} persistor={persistorStore}>
+      <App />
+    </PersistGate>
   </Provider>,
   // </React.StrictMode>,
   document.getElementById("root")
