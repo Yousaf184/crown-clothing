@@ -1,6 +1,13 @@
 import React from "react";
 
-import classes from "./checkoutItem.module.scss";
+import {
+  checkoutItem,
+  imgContainer,
+  col,
+  quantityCol,
+  upArrow,
+  downArrow
+} from "./checkoutItem.module.scss";
 
 // constants used for changing cart item quantity
 const INCREASE = "increase";
@@ -24,14 +31,14 @@ function CheckoutItem(props) {
   };
 
   return (
-    <div className={classes.checkoutItem}>
-      <div className={`${classes.imgContainer} ${classes.col}`}>
+    <div className={checkoutItem}>
+      <div className={`${imgContainer} ${col}`}>
         <img src={imageUrl} alt="checkout item" />
       </div>
-      <span className={classes.col}>{name}</span>
-      <div className={`${classes.col} ${classes.quantityCol}`}>
+      <span className={col}>{name}</span>
+      <div className={`${col} ${quantityCol}`}>
         <span
-          className={classes.upArrow}
+          className={upArrow}
           onClick={changeItemQuantity}
           data-change={INCREASE}
         >
@@ -39,15 +46,15 @@ function CheckoutItem(props) {
         </span>
         <span>x{quantity}</span>
         <span
-          className={classes.downArrow}
+          className={downArrow}
           onClick={changeItemQuantity}
           data-change={DECREASE}
         >
           &#10094;
         </span>
       </div>
-      <span className={classes.col}>${price}</span>
-      <span onClick={removeItem} className={classes.col}>
+      <span className={col}>${price}</span>
+      <span onClick={removeItem} className={col}>
         &#10005;
       </span>
     </div>

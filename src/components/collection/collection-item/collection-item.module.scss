@@ -1,6 +1,6 @@
 .collectionItem {
-  width: 23%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   height: 350px;
   align-items: center;
@@ -15,18 +15,6 @@
     .addToCartBtn {
       opacity: 1;
       animation: animateAddToCartBtn 0.3s ease;
-    }
-  }
-
-  @media (max-width: 780px) {
-    & {
-      width: 48%;
-    }
-  }
-
-  @media (max-width: 390px) {
-    & {
-      width: 100%;
     }
   }
 
@@ -48,7 +36,7 @@
     box-sizing: border-box;
 
     .name {
-      flex-basis: 85%;
+      flex-basis: 75%;
       max-width: 85%;
       white-space: nowrap;
       overflow: hidden;
@@ -56,7 +44,7 @@
     }
 
     .price {
-      flex-basis: 15%;
+      flex-basis: 12%;
       text-align: right;
     }
   }

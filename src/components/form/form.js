@@ -2,7 +2,7 @@ import React from "react";
 
 import useForm from "../../custom-hooks/useForm";
 
-import classes from "./form.module.scss";
+import { errorBlock, subtitle, form, submitBtn } from "./form.module.scss";
 
 function Form(props) {
   const {
@@ -18,20 +18,18 @@ function Form(props) {
 
   return (
     <React.Fragment>
-      {errorMessage && (
-        <span className={classes.errorBlock}>{errorMessage}</span>
-      )}
+      {errorMessage && <span className={errorBlock}>{errorMessage}</span>}
 
-      <div className={classes.form}>
+      <div className={form}>
         <form onSubmit={submitHandler}>
           <h2>{formTitle}</h2>
-          <span className={classes.subtitle}>{formSubtitle}</span>
+          <span className={subtitle}>{formSubtitle}</span>
 
           {renderFormInputs()}
 
           <button
             type="submit"
-            className={classes.submitBtn}
+            className={submitBtn}
             disabled={!isFormValid()}
             style={{ marginTop: "20px" }}
           >

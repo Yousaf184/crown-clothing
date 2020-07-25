@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 
 import CartItem from "../cart-item/cartItem";
 
-import classes from "./cartDropdown.module.scss";
+import classes, {
+  cartDropdown,
+  emptyCartInfoMsg
+} from "./cartDropdown.module.scss";
 
 function CartDropdown() {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
@@ -15,9 +18,9 @@ function CartDropdown() {
   };
 
   return (
-    <div className={classes.cartDropdown}>
+    <div className={cartDropdown}>
       {cartItems.length === 0 ? (
-        <span className={classes.emptyCartInfoMsg}>Cart is Empty</span>
+        <span className={emptyCartInfoMsg}>Cart is Empty</span>
       ) : (
         <div className={classes.cartItems}>
           {cartItems.map((item) => (

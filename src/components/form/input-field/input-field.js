@@ -1,6 +1,6 @@
 import React from "react";
 
-import classes from "./input-field.module.scss";
+import { inputContainer, shrink, error } from "./input-field.module.scss";
 
 function InputField(props) {
   const {
@@ -14,14 +14,14 @@ function InputField(props) {
   } = props;
 
   return (
-    <div className={classes.inputContainer}>
+    <div className={inputContainer}>
       <input type={type} name={name} value={value} onChange={handleChange} />
-      <label className={value ? classes.shrink : ""}>{label}</label>
+      <label className={value ? shrink : ""}>{label}</label>
       {errorMessage && !isValid && (
-        <span className={classes.error}>{errorMessage}</span>
+        <span className={error}>{errorMessage}</span>
       )}
     </div>
   );
 }
 
-export default InputField;
+export default React.memo(InputField);

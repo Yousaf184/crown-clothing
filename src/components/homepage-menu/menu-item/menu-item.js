@@ -1,19 +1,28 @@
 import React from "react";
 
-import classes from "./menu-item.module.scss";
+import classes, {
+  menuItem,
+  backgroundImage,
+  menuItemContent,
+  subtitle
+} from "./menu-item.module.scss";
 
 function MenuItem(props) {
   const { title, imageUrl } = props.section;
 
   return (
-    <div className={classes.menuItem}>
+    <div
+      className={menuItem}
+      onClick={props.showCollection}
+      data-collection={title} // data-* attribute will be used by 'showCollection' function
+    >
       <div
-        className={classes.backgroundImage}
+        className={backgroundImage}
         style={{ backgroundImage: `url(${imageUrl})` }}
       ></div>
-      <div className={`${classes.menuItemContent}`}>
+      <div className={`${menuItemContent}`}>
         <h1 className={classes.title}>{title}</h1>
-        <h3 className={classes.subtitle}>SHOW NOW</h3>
+        <h3 className={subtitle}>SHOW NOW</h3>
       </div>
     </div>
   );

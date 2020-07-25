@@ -6,7 +6,7 @@ import { toggleCartDropdown } from "../../redux/actions/cart";
 import CartDropdown from "./cart-dropdown/cartDropdown";
 import { ReactComponent as ShoppingBagIcon } from "../../assets/shopping-bag.svg";
 
-import classes from "./cart.module.scss";
+import { cart, icon, itemCount } from "./cart.module.scss";
 
 function Cart() {
   const disptach = useDispatch();
@@ -22,9 +22,9 @@ function Cart() {
   };
 
   return (
-    <div className={classes.cart} onClick={toggleDropdown}>
-      <ShoppingBagIcon className={classes.icon} />
-      <span className={classes.itemCount}>{cartItemsCount}</span>
+    <div className={cart} onClick={toggleDropdown}>
+      <ShoppingBagIcon className={icon} />
+      <span className={itemCount}>{cartItemsCount}</span>
 
       {openCartDropdown && <CartDropdown />}
     </div>

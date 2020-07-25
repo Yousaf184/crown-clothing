@@ -6,8 +6,8 @@ const SECTIONS_DATA = [
     title: "Sneakers",
     imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png"
   },
-  { id: 4, title: "Women", imageUrl: "https://i.ibb.co/GCCdy8t/womens.png" },
-  { id: 5, title: "Men", imageUrl: "https://i.ibb.co/R70vBrQ/men.png" }
+  { id: 4, title: "Womens", imageUrl: "https://i.ibb.co/GCCdy8t/womens.png" },
+  { id: 5, title: "Mens", imageUrl: "https://i.ibb.co/R70vBrQ/men.png" }
 ];
 
 export default SECTIONS_DATA;

@@ -48,7 +48,7 @@ function App() {
       <Route exact path="/" component={HomePage} />
       <Route exact path="/auth" component={AuthPage} />
       <Route exact path="/checkout" component={CheckoutPage} />
-      <Route path="/shop" exact component={ShopPage} />
+      <Route path="/shop" component={ShopPage} />
     </BrowserRouter>
   );
 }

@@ -1,11 +1,15 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import { addItemToCart } from "../../redux/actions/cart";
+import { addItemToCart } from "../../../redux/actions/cart";
 
-import CollectionItem from "./collection-item/collection-item";
+import CollectionItem from "../collection-item/collection-item";
 
-import classes from "./collection-preview.module.scss";
+import {
+  collectionPreview,
+  title,
+  preview
+} from "./collection-preview.module.scss";
 
 function CollectionPreview(props) {
   const disptach = useDispatch();
@@ -30,9 +34,9 @@ function CollectionPreview(props) {
   );
 
   return (
-    <div className={classes.collectionPreview}>
-      <h1 className={classes.title}>{props.title}</h1>
-      <div className={classes.preview}>
+    <div className={collectionPreview}>
+      <h1 className={title}>{props.title}</h1>
+      <div className={preview}>
         {props.items
           .filter((_, idx) => idx < 4) // only show first 4 items
           .map((item) => (

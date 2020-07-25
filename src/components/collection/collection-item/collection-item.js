@@ -1,22 +1,27 @@
 import React from "react";
 
-import classes from "./collection-item.module.scss";
+import classes, {
+  collectionItem,
+  image,
+  collectionFooter,
+  addToCartBtn
+} from "./collection-item.module.scss";
 
 function CollectionItem(props) {
   const { name, imageUrl, price } = props.item;
 
   return (
-    <div className={classes.collectionItem}>
+    <div className={collectionItem}>
       <div
-        className={classes.image}
+        className={image}
         style={{ backgroundImage: `url(${imageUrl})` }}
       ></div>
-      <div className={classes.collectionFooter}>
+      <div className={collectionFooter}>
         <span className={classes.name}>{name}</span>
         <span className={classes.price}>${price}</span>
       </div>
       <button
-        className={`${classes.addToCartBtn} outline`}
+        className={`${addToCartBtn} outline`}
         onClick={props.addItemToCart}
         data-item={JSON.stringify(props.item)} // will be used by addItemToCart function
       >
