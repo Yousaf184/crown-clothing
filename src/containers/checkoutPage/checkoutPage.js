@@ -11,7 +11,12 @@ import {
   decreaseCartItemQuantity
 } from "../../redux/actions/cart";
 
-import classes from "./checkoutPage.module.scss";
+import classes, {
+  testCreditCardInfo,
+  testCardInfo,
+  paymentContainer
+} from "./checkoutPage.module.scss";
+import StripeCheckoutButton from "../../components/stripe-btn/stripeCheckoutBtn";
 
 function CheckoutPage() {
   const cartItems = useSelector((state) => state.cartReducer.cartItems);
@@ -48,7 +53,21 @@ function CheckoutPage() {
           />
         ))}
       </div>
+
       <CheckoutTotal cartItemsTotal={cartItemsTotal} />
+
+      <div className={paymentContainer}>
+        <div className={testCreditCardInfo}>
+          <span>Use following information for test payment</span>
+          <div className={testCardInfo}>
+            <span>Credit Card Number: 4242 4242 4242 4242</span>
+            <span>Expiry: 01/20</span>
+            <span>CVV: 123</span>
+          </div>
+        </div>
+
+        <StripeCheckoutButton totalAmount={cartItemsTotal} />
+      </div>
     </div>
   );
 }

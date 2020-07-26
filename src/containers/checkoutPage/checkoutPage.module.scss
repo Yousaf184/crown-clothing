@@ -1,4 +1,24 @@
 .checkoutPage {
   width: 95%;
   margin: 0 auto;
+
+  .paymentContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 10px;
+
+    .testCreditCardInfo {
+      color: red;
+      padding: 15px;
+      border: 1px solid #eee;
+      display: inline-block;
+
+      .testCardInfo {
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+      }
+    }
+  }
 }
