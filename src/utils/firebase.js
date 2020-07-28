@@ -81,3 +81,14 @@ export async function getUserByID(userID) {
     throw error;
   }
 }
+
+export async function getCollection(collectionName) {
+  try {
+    const collectionRef = firestore.collection(collectionName);
+    const collectionSnapshot = await collectionRef.get();
+    return collectionSnapshot;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+}

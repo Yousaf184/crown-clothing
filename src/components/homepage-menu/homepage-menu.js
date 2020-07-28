@@ -1,14 +1,24 @@
-import React, { useCallback } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import MenuItem from "./menu-item/menu-item";
+import Spinner from "../spinner/spinner";
+
+import { getItemSections } from "../../redux/actions/shopData";
 
 import { homepageMenu } from "./homepage-menu.module.scss";
 
 function HomepageMenu() {
   const routerHistory = useHistory();
-  const sections = useSelector((state) => state.shopDataReducer.sectionsData);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.itemSectionsReducer);
+
+  useEffect(() => {
+    if (state.data.length === 0) {
+      dispatch(getItemSections());
+    }
+  }, [dispatch, state.data]);
 
   const showCollection = useCallback(
     ({ target }) => {
@@ -18,10 +28,18 @@ function HomepageMenu() {
     [routerHistory]
   );
 
+  if (state.inProgress) {
+    return <Spinner />;
+  }
+
   return (
     <div className={homepageMenu}>
-      {sections.map((sec) => (
-        <MenuItem key={sec.id} section={sec} showCollection={showCollection} />
+      {state.data.map((sec) => (
+        <MenuItem
+          key={sec.title}
+          section={sec}
+          showCollection={showCollection}
+        />
       ))}
     </div>
   );
