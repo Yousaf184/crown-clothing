@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CollectionPreview from "../collection-preview/collection-preview";
 import Spinner from "../../spinner/spinner";
 
-import { getItems } from "../../../redux/actions/shopData";
+import { getItemsStart } from "../../../redux/actions/shopData";
 
 function CollectionsOverview() {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ function CollectionsOverview() {
 
   useEffect(() => {
     if (Object.keys(state.data).length === 0) {
-      dispatch(getItems());
+      dispatch(getItemsStart());
     }
   }, [dispatch, state.data]);
 

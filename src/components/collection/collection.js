@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CollectionItem from "./collection-item/collection-item";
 import Spinner from "../spinner/spinner";
 
-import { getItems } from "../../redux/actions/shopData";
+import { getItemsStart } from "../../redux/actions/shopData";
 
 import { collection, itemsContainer } from "./collection.module.scss";
 
@@ -18,7 +18,7 @@ function Collection(props) {
 
   useEffect(() => {
     if (!items) {
-      dispatch(getItems());
+      dispatch(getItemsStart());
     }
   }, [dispatch, items]);
 

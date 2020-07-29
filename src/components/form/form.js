@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import useForm from "../../custom-hooks/useForm";
 
@@ -10,15 +11,15 @@ function Form(props) {
     formSubtitle,
     formObj,
     submitBtnLabel,
-    submitHandler,
-    errorMessage
+    submitHandler
   } = props;
 
+  const authError = useSelector((state) => state.userReducer.error);
   const { renderFormInputs, isFormValid } = useForm(formObj);
 
   return (
     <React.Fragment>
-      {errorMessage && <span className={errorBlock}>{errorMessage}</span>}
+      {authError && <span className={errorBlock}>{authError}</span>}
 
       <div className={form}>
         <form onSubmit={submitHandler}>
@@ -43,4 +44,4 @@ function Form(props) {
   );
 }
 
-export default Form;
+export default React.memo(Form);

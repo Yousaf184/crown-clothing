@@ -1,8 +1,8 @@
 import {
   GET_ITEM_SECTIONS_SUCCESS,
-  GET_ITEM_SECTIONS_IN_PROGRESS,
+  GET_ITEM_SECTIONS_START,
   GET_ITEM_SECTIONS_ERROR,
-  GET_ITEMS_IN_PROGRESS,
+  GET_ITEMS_START,
   GET_ITEMS_SUCCESS,
   GET_ITEMS_ERROR
 } from "../actions/actionTypes";
@@ -17,7 +17,7 @@ export function itemSectionsReducer(state = itemSectionsInitialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_ITEM_SECTIONS_IN_PROGRESS:
+    case GET_ITEM_SECTIONS_START:
       return {
         ...state,
         inProgress: true,
@@ -54,7 +54,7 @@ export function itemsDataReducer(state = itemsInitialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_ITEMS_IN_PROGRESS:
+    case GET_ITEMS_START:
       return {
         ...state,
         inProgress: true,

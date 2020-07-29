@@ -21,15 +21,24 @@ export const firebaseAuth = firebase.auth();
 
 export function signInWithGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  firebaseAuth.signInWithRedirect(provider);
+  return firebaseAuth.signInWithRedirect(provider);
 }
 
-export function signInWithEmail(email, password) {
+export function signInWithEmailPassword(email, password) {
   return firebaseAuth.signInWithEmailAndPassword(email, password);
 }
 
 export function signupWithEmailAndPassword(email, password) {
   return firebaseAuth.createUserWithEmailAndPassword(email, password);
+}
+
+export function isUserIsAuthenticated() {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
+      unsubscribe();
+      resolve(user);
+    }, reject);
+  });
 }
 
 // create user document if it doesn't already exists in the database

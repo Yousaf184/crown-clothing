@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
 import FormToggler from "../form-toggler/formToggler";
 
-import {
-  signInWithGoogle,
-  firebaseAuth,
-  signInWithEmail,
-  saveUserIfNotExists
-} from "../../../utils/firebase";
 import { loginForm } from "../../../utils/formConfig";
+
+import {
+  googleLoginStart,
+  checkGoogleRedirectResult,
+  loginWithEmailPasswordStart,
+  setAuthInProgress
+} from "../../../redux/actions/user";
 
 import classes from "./loginForm.module.scss";
 
@@ -19,54 +20,41 @@ import classes from "./loginForm.module.scss";
 const LOGIN_IN_PROGRESS_KEY = "loginInProgress";
 
 function LoginForm(props) {
-  const [loginInProgress, setLoginInProgress] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const routerHistory = useHistory();
+  const loginInProgress = useSelector(
+    (state) => state.userReducer.userAuthInProgress
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // login progress status is saved in localStorage
     // because of google signin which redirects to login page
     if (localStorage.getItem(LOGIN_IN_PROGRESS_KEY)) {
-      setLoginInProgress(true);
-      localStorage.removeItem(LOGIN_IN_PROGRESS_KEY);
+      dispatch(setAuthInProgress());
     }
 
-    firebaseAuth
-      .getRedirectResult()
-      .then(async (result) => {
-        if (result.user) {
-          const { uid, displayName, email } = result.user;
-          const user = { id: uid, name: displayName, email };
-          await saveUserIfNotExists(user);
-          routerHistory.replace("/");
-        }
-      })
-      .catch((error) => console.log(error.message));
-  }, [routerHistory]);
+    // check if auth page opened as a result of redirect
+    // from google login page.
+    // if it was, log user in otherwise do nothing.
+    dispatch(checkGoogleRedirectResult());
+
+    return () => localStorage.removeItem(LOGIN_IN_PROGRESS_KEY);
+  }, [dispatch]);
 
   const googleSignIn = async () => {
     // after redirect from google sign in page, this value
     // in localStorage will be used to determine whether to show spinner
     localStorage.setItem(LOGIN_IN_PROGRESS_KEY, true);
-    setLoginInProgress(true);
-
-    signInWithGoogle();
+    dispatch(googleLoginStart());
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoginInProgress(true);
 
     const email = event.target.elements["email"].value;
     const password = event.target.elements["password"].value;
 
-    try {
-      await signInWithEmail(email, password);
-      routerHistory.replace("/");
-    } catch (error) {
-      setErrorMessage("incorrect email/password combination");
-      setLoginInProgress(false);
-    }
+    dispatch(loginWithEmailPasswordStart(email, password));
   };
 
   if (loginInProgress) {
@@ -80,7 +68,6 @@ function LoginForm(props) {
       formObj={loginForm}
       submitBtnLabel="Login"
       submitHandler={handleSubmit}
-      errorMessage={errorMessage}
     >
       <button className={classes.googleSignInBtn} onClick={googleSignIn}>
         Sign in with Google

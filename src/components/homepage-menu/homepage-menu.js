@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import MenuItem from "./menu-item/menu-item";
 import Spinner from "../spinner/spinner";
 
-import { getItemSections } from "../../redux/actions/shopData";
+import { getItemSectionsStart } from "../../redux/actions/shopData";
 
 import { homepageMenu } from "./homepage-menu.module.scss";
 
@@ -16,7 +16,7 @@ function HomepageMenu() {
 
   useEffect(() => {
     if (state.data.length === 0) {
-      dispatch(getItemSections());
+      dispatch(getItemSectionsStart());
     }
   }, [dispatch, state.data]);
 
