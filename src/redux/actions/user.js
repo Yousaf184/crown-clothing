@@ -2,12 +2,13 @@ import {
   GOOGLE_LOGIN_START,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  GOOGLE_LOGIN_REDIRECT_RESULT,
   EMAIL_PASSWORD_LOGIN_START,
   AUTH_IN_PROGRESS,
   SIGN_OUT,
   SIGN_OUT_SUCCESS,
-  CHECK_USER_SESSION
+  CHECK_USER_SESSION,
+  SIGN_UP_START,
+  SIGN_UP_ERROR
 } from "./actionTypes";
 
 export function setAuthInProgress() {
@@ -16,10 +17,6 @@ export function setAuthInProgress() {
 
 export function googleLoginStart() {
   return { type: GOOGLE_LOGIN_START };
-}
-
-export function checkGoogleRedirectResult() {
-  return { type: GOOGLE_LOGIN_REDIRECT_RESULT };
 }
 
 export function loginSuccess(user) {
@@ -44,4 +41,12 @@ export function userSignoutSuccess() {
 
 export function checkUserSession() {
   return { type: CHECK_USER_SESSION };
+}
+
+export function signUpStart(name, email, password) {
+  return { type: SIGN_UP_START, payload: { name, email, password } };
+}
+
+export function signUpError(errorMessage) {
+  return { type: SIGN_UP_ERROR, payload: errorMessage };
 }

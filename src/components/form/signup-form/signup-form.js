@@ -1,37 +1,27 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Form from "../form";
 import Spinner from "../../spinner/spinner";
 import FormToggler from "../form-toggler/formToggler";
 
-import {
-  signupWithEmailAndPassword,
-  saveNewUser
-} from "../../../utils/firebase";
+import { signUpStart } from "../../../redux/actions/user";
 import { signupForm } from "../../../utils/formConfig";
 
 function SignupForm(props) {
-  const [signupInProgress, setSignupInProgress] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const routerHistory = useHistory();
+  const signupInProgress = useSelector(
+    (state) => state.userReducer.userAuthInProgress
+  );
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSignupInProgress(true);
 
     const name = event.target.elements["name"].value;
     const email = event.target.elements["email"].value;
     const password = event.target.elements["password"].value;
 
-    try {
-      const result = await signupWithEmailAndPassword(email, password);
-      await saveNewUser({ id: result.user.uid, name, email });
-      routerHistory.replace("/");
-    } catch (error) {
-      setErrorMessage(error.message);
-      setSignupInProgress(false);
-    }
+    dispatch(signUpStart(name, email, password));
   };
 
   if (signupInProgress) {
@@ -45,7 +35,6 @@ function SignupForm(props) {
       formObj={signupForm}
       submitBtnLabel="Sign up"
       submitHandler={handleSubmit}
-      errorMessage={errorMessage}
     >
       <FormToggler
         label="Already have an account?"

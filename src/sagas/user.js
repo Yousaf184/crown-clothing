@@ -2,15 +2,16 @@ import { takeLatest, call, put, all } from "redux-saga/effects";
 
 import {
   GOOGLE_LOGIN_START,
-  GOOGLE_LOGIN_REDIRECT_RESULT,
   EMAIL_PASSWORD_LOGIN_START,
   SIGN_OUT,
-  CHECK_USER_SESSION
+  CHECK_USER_SESSION,
+  SIGN_UP_START
 } from "../redux/actions/actionTypes";
 import {
   loginSuccess,
   loginError,
-  userSignoutSuccess
+  userSignoutSuccess,
+  signUpError
 } from "../redux/actions/user";
 
 import {
@@ -19,29 +20,13 @@ import {
   saveUserIfNotExists,
   signInWithEmailPassword,
   isUserIsAuthenticated,
-  getUserByID
+  getUserByID,
+  signupWithEmailAndPassword,
+  saveNewUser
 } from "../utils/firebase";
 
 function* loginWithGoogle() {
   yield signInWithGoogle();
-}
-
-function* onGoogleRedirectResult() {
-  try {
-    const result = yield firebaseAuth.getRedirectResult();
-
-    if (!result.user) {
-      return;
-    }
-
-    const { uid, displayName, email } = result.user;
-    const user = { id: uid, name: displayName, email };
-
-    yield saveUserIfNotExists(user);
-    yield put(loginSuccess(user));
-  } catch (error) {
-    yield put(loginError(error.message));
-  }
 }
 
 function* loginWithEmailPassword(actionObj) {
@@ -67,19 +52,42 @@ function* isUserLoggedIn() {
 
     if (!authUser) return;
 
-    const user = yield getUserByID(authUser.uid);
+    let user;
+
+    // if 'autUser' contains a property named 'displayname'
+    // then this means that user was redirected tpo the app after google login
+    // So save the user in firesotre if it doesn't already exists in the database
+    if (authUser.displayName) {
+      const { uid, displayName, email } = authUser;
+      user = { id: uid, name: displayName, email };
+
+      yield saveUserIfNotExists(user);
+    } else {
+      user = yield getUserByID(authUser.uid);
+    }
+
     yield put(loginSuccess(user));
   } catch (error) {
     console.log(error.message);
   }
 }
 
-function* watchGoogleLoginStart() {
-  yield takeLatest(GOOGLE_LOGIN_START, loginWithGoogle);
+function* userSignUp(actionObj) {
+  const { name, email, password } = actionObj.payload;
+
+  try {
+    const result = yield signupWithEmailAndPassword(email, password);
+    const userId = result.user.uid;
+
+    yield saveNewUser({ id: userId, name, email });
+    yield put(loginSuccess({ id: userId, name, email }));
+  } catch (error) {
+    yield put(signUpError(error.message));
+  }
 }
 
-function* watchCheckGoogleRedirectResult() {
-  yield takeLatest(GOOGLE_LOGIN_REDIRECT_RESULT, onGoogleRedirectResult);
+function* watchGoogleLoginStart() {
+  yield takeLatest(GOOGLE_LOGIN_START, loginWithGoogle);
 }
 
 function* watchLoginWithEmailPassStart() {
@@ -94,13 +102,17 @@ function* watchCheckUserSession() {
   yield takeLatest(CHECK_USER_SESSION, isUserLoggedIn);
 }
 
+function* watchUserSignUpStart() {
+  yield takeLatest(SIGN_UP_START, userSignUp);
+}
+
 function* userSagas() {
   yield all([
     call(watchGoogleLoginStart),
-    call(watchCheckGoogleRedirectResult),
     call(watchLoginWithEmailPassStart),
     call(watchUserSignOut),
-    call(watchCheckUserSession)
+    call(watchCheckUserSession),
+    call(watchUserSignUpStart)
   ]);
 }
 

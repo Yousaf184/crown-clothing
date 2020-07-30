@@ -9,7 +9,6 @@ import { loginForm } from "../../../utils/formConfig";
 
 import {
   googleLoginStart,
-  checkGoogleRedirectResult,
   loginWithEmailPasswordStart,
   setAuthInProgress
 } from "../../../redux/actions/user";
@@ -32,11 +31,6 @@ function LoginForm(props) {
     if (localStorage.getItem(LOGIN_IN_PROGRESS_KEY)) {
       dispatch(setAuthInProgress());
     }
-
-    // check if auth page opened as a result of redirect
-    // from google login page.
-    // if it was, log user in otherwise do nothing.
-    dispatch(checkGoogleRedirectResult());
 
     return () => localStorage.removeItem(LOGIN_IN_PROGRESS_KEY);
   }, [dispatch]);

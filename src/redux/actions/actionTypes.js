@@ -3,7 +3,6 @@ export const SET_CURRENT_USER = "set_current_user";
 export const GOOGLE_LOGIN_START = "google_login_start";
 export const EMAIL_PASSWORD_LOGIN_START = "email_password_login_start";
 export const SIGN_UP_START = "sign_up_start";
-export const GOOGLE_LOGIN_REDIRECT_RESULT = "google_login_redirect_result";
 export const LOGIN_SUCCESS = "login_success";
 export const LOGIN_ERROR = "login_error";
 export const SIGN_UP_ERROR = "signup_error";

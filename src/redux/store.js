@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import reduxThunk from "redux-thunk";
 import createSagaMiddleware from "redux-saga";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -23,7 +22,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const reduxStore = createStore(
   persistedReducer,
-  composeEnhancers(applyMiddleware(reduxThunk, sagaMiddleware, reduxLogger))
+  composeEnhancers(applyMiddleware(sagaMiddleware, reduxLogger))
 );
 
 sagaMiddleware.run(rootSaga);
