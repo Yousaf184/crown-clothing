@@ -9,7 +9,7 @@
   max-width: $checkout-content-maxWidth;
 
   span {
-    flex-basis: 23%;
+    flex-basis: $checkoutColWidthLarge;
     font-weight: bold;
     box-sizing: border-box;
     text-align: center;
@@ -17,5 +17,15 @@
 
   span:last-child {
     flex-basis: 8%;
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      padding: 0;
+
+      span {
+        flex-basis: $checkoutColWidthSmall;
+      }
+    }
   }
 }

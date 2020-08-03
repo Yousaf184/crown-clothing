@@ -21,7 +21,7 @@
   }
 
   .col {
-    flex-basis: 23%;
+    flex-basis: $checkoutColWidthLarge;
     position: relative;
     box-sizing: border-box;
     text-align: center;
@@ -53,6 +53,26 @@
       .downArrow {
         transform: rotate(270deg);
         top: 1px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      .imgContainer {
+        padding: 0px;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .col {
+        flex-basis: $checkoutColWidthSmall;
+
+        &:last-child {
+          flex-basis: $checkoutColWidthSmall;
+        }
       }
     }
   }
