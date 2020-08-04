@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import App from "./containers/app/app";
 import Spinner from "./components/spinner/spinner";
+
 import { reduxStore, persistorStore } from "./redux/store";
 
 import * as serviceWorker from "./serviceWorker";
@@ -12,14 +13,13 @@ import * as serviceWorker from "./serviceWorker";
 import "./index.scss";
 
 ReactDOM.render(
-  // <React.StrictMode>
-  <Provider store={reduxStore}>
-    <PersistGate loading={<Spinner />} persistor={persistorStore}>
-      <App />
-    </PersistGate>
-  </Provider>,
-
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <Provider store={reduxStore}>
+      <PersistGate loading={<Spinner />} persistor={persistorStore}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
