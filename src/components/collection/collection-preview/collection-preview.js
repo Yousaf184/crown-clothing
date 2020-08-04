@@ -1,9 +1,10 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import { addItemToCart } from "../../../redux/actions/cart";
-
 import CollectionItem from "../collection-item/collection-item";
+
+import { addItemToCart } from "../../../redux/actions/cart";
+import { addToCart as handleAddToCartClick } from "../../../utils/sharedCallbacks";
 
 import {
   collectionPreview,
@@ -12,25 +13,13 @@ import {
 } from "./collection-preview.module.scss";
 
 function CollectionPreview(props) {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
 
   const addToCart = useCallback(
     (event) => {
-      const clickedBtn = event.target;
-
-      // change the text of the button to indicate
-      // that item has been added to the cart
-      clickedBtn.textContent = "Done";
-
-      const itemToAdd = JSON.parse(clickedBtn.dataset.item);
-      disptach(addItemToCart(itemToAdd));
-
-      // change the text of the button back to original value
-      setTimeout(() => {
-        clickedBtn.textContent = "Add To Cart";
-      }, 1500);
+      handleAddToCartClick(event, dispatch, addItemToCart);
     },
-    [disptach]
+    [dispatch]
   );
 
   return (

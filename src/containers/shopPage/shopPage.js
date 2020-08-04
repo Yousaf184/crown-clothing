@@ -12,7 +12,7 @@ function ShopPage(props) {
   return (
     <>
       <Route path={props.match.path} exact component={CollectionsOverview} />
-      <Suspense fallback={Spinner}>
+      <Suspense fallback={<Spinner />}>
         <Route
           path={`${props.match.path}/:collectionName`}
           component={Collection}
