@@ -1,55 +1,27 @@
-import React, { useState, useCallback } from "react";
-import InputField from "../components/form/input-field/input-field";
+import { useState, useCallback } from "react";
 
 function useForm(formObj) {
   const [form, setForm] = useState(formObj);
 
   function renderFormInputs() {
-    const arr = Object.values(form);
-
-    return arr.map((inputObj, index) => (
-      <InputField
-        key={index}
-        {...inputObj.inputConfig}
-        isValid={inputObj.valid}
-        value={inputObj.value}
-        errorMessage={inputObj.errorMessage}
-        label={inputObj.label}
-        handleChange={onInputChange}
-      />
-    ));
+    return Object.values(form).map((inputObj) => {
+      const { value, label, errorMessage, valid, renderInput } = inputObj;
+      return renderInput(onInputChange, value, valid, errorMessage, label);
+    });
   }
-
-  /**
-   * set error message of the validation rule passed as an argument
-   * as an error message of the inputField passed as an argument.
-   *
-   * @param {object} inputField - object representation of the input field
-   * @param {object} validationRule - object containing validation rule that was broken
-   */
-  const setInputFieldErrorMessage = useCallback(
-    (inputField, validationRule) => {
-      inputField.errorMessage = validationRule.message;
-    },
-    []
-  );
 
   const isInputFieldValid = useCallback(
     (inputField) => {
-      const validationRules = inputField.validationRules;
-
-      for (let i = 0; i < validationRules.length; i++) {
-        // 'this' inside the validate function should refer to form obj
-        // this is done to compare password and confirmPassword values
-        if (!validationRules[i].validate.call(form, inputField.value)) {
-          setInputFieldErrorMessage(inputField, validationRules[i]);
+      for (const rule of inputField.validationRules) {
+        if (!rule.validate(inputField.value, form)) {
+          inputField.errorMessage = rule.message;
           return false;
         }
       }
 
       return true;
     },
-    [form, setInputFieldErrorMessage]
+    [form]
   );
 
   const onInputChange = useCallback(
@@ -82,7 +54,7 @@ function useForm(formObj) {
   /**
    * returns boolean value indicating whether overall form is valid
    *
-   * @param {object} formObj - object respresentation of a form
+   * @param {object} formObj - object representation of a form
    */
   const isFormValid = useCallback(() => {
     let isValid = true;
@@ -98,7 +70,7 @@ function useForm(formObj) {
     return isValid;
   }, [form]);
 
-  return { form, renderFormInputs, isFormValid };
+  return { renderFormInputs, isFormValid };
 }
 
 export default useForm;

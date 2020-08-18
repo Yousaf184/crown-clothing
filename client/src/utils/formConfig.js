@@ -1,7 +1,11 @@
+import React from "react";
+import Input from "../components/form/input-field/input-field";
+
 import {
   requiredRule,
   minLengthRule,
-  maxLengthRule
+  maxLengthRule,
+  passwordMatchRule
 } from "./inputValidationRules";
 
 /**
@@ -14,11 +18,21 @@ import {
  */
 function createFormFieldConfig(label, name, type, defaultValue = "") {
   return {
-    label,
-    inputConfig: {
-      name,
-      type
+    renderInput: (handleChange, value, isValid, error, key) => {
+      return (
+        <Input
+          key={key}
+          name={name}
+          type={type}
+          label={label}
+          isValid={isValid}
+          value={value}
+          handleChange={handleChange}
+          errorMessage={error}
+        />
+      );
     },
+    label,
     value: defaultValue,
     valid: false,
     errorMessage: "",
@@ -66,14 +80,6 @@ export const signupForm = {
   },
   confirmPassword: {
     ...createFormFieldConfig("Confirm Password", "confirmPassword", "password"),
-    validationRules: [
-      {
-        name: "passwordMisMatch",
-        message: "passwords do not match",
-        validate(inputValue) {
-          return this.password.value === inputValue;
-        }
-      }
-    ]
+    validationRules: [passwordMatchRule()]
   }
 };
